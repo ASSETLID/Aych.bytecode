@@ -19,6 +19,7 @@ clean: _obuild
 distclean: clean
 	rm -rf _obuild
 
-test: _obuild
+test: build
+	mkdir -p ${DEST_DIR}
 	cp static/* ${DEST_DIR}
 	cat static/pre.js _obuild/test-sodium/test-sodium.js static/post.js > ${DEST_DIR}/test-sodium.js
