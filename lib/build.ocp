@@ -1,0 +1,45 @@
+
+optcomp_opt = %string(strings = [
+  "-let ocaml_full_version=("
+    ocaml_major_version ","
+    ocaml_minor_version ","
+    ocaml_point_version
+  ")"
+])
+
+camlp4_optcomp_js = [
+  "camlp4o"
+  "%{optcomp_SRC_DIR}%/optcomp.cma" optcomp_opt
+  "%{js_of_ocaml-camlp4_SRC_DIR}%/pa_js.cma"
+]
+
+camlp4_js = [
+  "camlp4o"
+  "%{js_of_ocaml-camlp4_SRC_DIR}%/pa_js.cma"
+]
+
+camlp4_optcomp = [
+  "camlp4o"
+  "%{optcomp_SRC_DIR}%/optcomp.cma" optcomp_opt
+]
+
+begin library "jstest"
+  requires = [
+    "js_of_ocaml"
+  ]
+  files = [
+    "jstest.ml" ( pp = camlp4_js )
+  ]
+end
+
+begin library "ocp-libsodium.js"
+  requires = [
+    "bigarray"
+    "js_of_ocaml"
+  ]
+  files = [
+    "libsodium_js.ml" ( pp = camlp4_js )
+    "sodium_storage.ml" ( pp = camlp4_js )
+    "sodium.ml" ( pp = camlp4_js )
+  ]
+end

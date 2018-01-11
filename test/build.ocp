@@ -1,0 +1,28 @@
+
+
+begin program "test-sodium"
+  requires = [
+    "jstest"
+    "ocp-libsodium.js"
+  ]
+  files = [
+    "test_sodium.ml"
+  ]
+  build_rules = [
+    "%{test-sodium_FULL_DST_DIR}%/test-sodium.js" (
+      build_target = true
+      sources = %byte_exe( p = "test-sodium" )
+      commands = [ {
+        "js_of_ocaml"
+          "--pretty"
+          "--no-inline"
+          "+weak.js";
+          "+dynlink.js";
+          "+toplevel.js";
+          "+bigarray.js";
+          (* "+cstruct/cstruct.js"; *)
+           %byte_exe( p = "test-sodium" )
+      } ]
+    )
+  ]
+end
