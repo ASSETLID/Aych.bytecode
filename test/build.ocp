@@ -35,7 +35,7 @@ end
 begin program "test-sodium"
   requires = [
     "jstest"
-    "ocp-libsodium.js"
+    "ocp-libsodium-js"
   ]
   files = [
     "test_sodium.ml"
@@ -46,13 +46,13 @@ begin program "test-sodium"
       sources = %byte_exe( p = "test-sodium" )
       commands = [ {
         "js_of_ocaml"
-          "--pretty"
-          "--no-inline"
-          "+weak.js";
-          "+dynlink.js";
-          "+toplevel.js";
-          "+bigarray.js";
-          (* "+cstruct/cstruct.js"; *)
+          (* "--pretty"
+           * "--no-inline" *)
+          "+weak.js"
+          "+dynlink.js"
+          "+toplevel.js"
+          "+bigarray.js"
+          (* "+cstruct/cstruct.js" *)
            %byte_exe( p = "test-sodium" )
       } ]
     )

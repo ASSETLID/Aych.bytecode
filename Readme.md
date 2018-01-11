@@ -1,4 +1,4 @@
-# ocp-libsodium.js
+# ocp-libsodium-js
 
 [Js\_of\_ocaml](https://ocsigen.org/js_of_ocaml) ready version of
 [libsodium.js](https://github.com/jedisct1/libsodium.js).
