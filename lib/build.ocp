@@ -23,15 +23,6 @@ camlp4_optcomp = [
   "%{optcomp_SRC_DIR}%/optcomp.cma" optcomp_opt
 ]
 
-begin library "jstest"
-  requires = [
-    "js_of_ocaml"
-  ]
-  files = [
-    "jstest.ml" ( pp = camlp4_js )
-  ]
-end
-
 begin library "ocp-libsodium.js"
   requires = [
     "bigarray"
