@@ -238,3 +238,88 @@ module Sign = struct
   module Bigbytes = Make(Storage.Bigbytes)
 
 end
+
+
+module Hash = struct
+  type hash = Typed_array.uint8Array Js.t (* Bytes.t *)
+
+  let primitive = "sha512"
+
+  let size = sodium##crypto_hash_BYTES_
+
+  let equal h1 h2 = sodium##memcmp(h1, h2)
+
+  module type H = sig
+    type storage
+    val primitive : string
+    val size : int
+    val of_hash : hash -> storage
+    val to_hash : storage -> hash
+    val digest  : storage -> hash
+  end
+
+  module type S = sig
+    include H
+    module Sha256 : H with type storage = storage
+    module Sha512 : H with type storage = storage
+  end
+
+  module Make(T: Storage.S) = struct
+    type storage = T.t
+
+    let primitive = primitive
+    let size = size
+
+    let of_hash str =
+      T.of_js str
+
+    let to_hash str =
+      if T.length str <> size then
+        raise (Size_mismatch "Hash.to_hash");
+      T.to_js str
+
+    let digest str =
+      let str_js = T.to_js str in
+      sodium##crypto_hash_(T.to_js str)
+
+    module Sha256 = struct
+      type storage = T.t
+      let primitive = "sha256"
+      let size = sodium##crypto_hash_sha256_BYTES_
+
+      let of_hash str =
+        T.of_js str
+
+      let to_hash str =
+        if T.length str <> size then
+          raise (Size_mismatch "Hash.to_hash");
+        T.to_js str
+
+      let digest str =
+        let str_js = T.to_js str in
+        sodium##crypto_hash_sha256_(T.to_js str)
+    end
+
+    module Sha512 = struct
+      type storage = T.t
+      let primitive = "sha512"
+      let size = sodium##crypto_hash_sha512_BYTES_
+
+      let of_hash str =
+        T.of_js str
+
+      let to_hash str =
+        if T.length str <> size then
+          raise (Size_mismatch "Hash.to_hash");
+        T.to_js str
+
+      let digest str =
+        let str_js = T.to_js str in
+        sodium##crypto_hash_sha512_(T.to_js str)
+    end
+
+  end
+
+  module Bytes = Make(Storage.Bytes)
+  module Bigbytes = Make(Storage.Bigbytes)
+end

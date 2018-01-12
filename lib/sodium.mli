@@ -224,3 +224,47 @@ module Sign : sig
   module Bytes : S with type storage = Bytes.t
   module Bigbytes : S with type storage = bigbytes
 end
+
+
+module Hash : sig
+  type hash
+
+  (** Primitive used by this implementation. Currently ["sha512"]. *)
+  val primitive : string
+
+  (** Size of hashes, in bytes. *)
+  val size      : int
+
+  (** [equal a b] checks [a] and [b] for equality in constant time. *)
+  val equal     : hash -> hash -> bool
+
+  module type H = sig
+    type storage
+
+    (** Primitive used by this implementation. Currently ["sha512"]. *)
+    val primitive : string
+
+    (** Size of hashes, in bytes. *)
+    val size      : int
+
+    (** [of_hash h] converts [h] to {!storage}. The result is {!size}
+        bytes long. *)
+    val of_hash : hash -> storage
+
+    (** [to_hash s] converts [s] to a hash.
+        @raise Size_mismatch if [s] is not {!size} bytes long *)
+    val to_hash : storage -> hash
+
+    (** [digest m] computes a hash for message [m]. *)
+    val digest  : storage -> hash
+  end
+
+  module type S = sig
+    include H
+    module Sha256 : H with type storage = storage
+    module Sha512 : H with type storage = storage
+  end
+
+  module Bytes : S with type storage = Bytes.t
+  module Bigbytes : S with type storage = bigbytes
+end

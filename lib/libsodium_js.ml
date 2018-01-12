@@ -58,6 +58,17 @@ class type sodium = object
   method crypto_sign_ed25519_sk_to_seed_ :
     Typed_array.uint8Array Js.t -> Typed_array.uint8Array Js.t Js.meth
 
+  (* Hash *)
+  method crypto_hash_BYTES_ : int Js.prop
+  method crypto_hash_sha256_BYTES_ : int Js.prop
+  method crypto_hash_sha512_BYTES_ : int Js.prop
+  method crypto_hash_ :
+    Typed_array.uint8Array Js.t -> Typed_array.uint8Array Js.t Js.meth
+  method crypto_hash_sha256_ :
+    Typed_array.uint8Array Js.t -> Typed_array.uint8Array Js.t Js.meth
+  method crypto_hash_sha512_ :
+    Typed_array.uint8Array Js.t -> Typed_array.uint8Array Js.t Js.meth
+
 end
 
 (*
