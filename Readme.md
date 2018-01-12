@@ -3,6 +3,14 @@
 [Js\_of\_ocaml](https://ocsigen.org/js_of_ocaml) ready version of
 [libsodium.js](https://github.com/jedisct1/libsodium.js).
 
+## Compilation
+
+To compile a bytecode application with Js\_of\_ocaml and this library use:
+
+```bash
+js_of_ocaml +weak.js +toplevel.js +bigarray.js myapp.byte
+```
+
 ## Usage
 
 When compiling an OCaml program which uses this library to Javascript, you need
@@ -24,3 +32,4 @@ cat static/pre.js pathto/myapp.js static/post.js > app.js
   </head>
 </html>
 ```
+
