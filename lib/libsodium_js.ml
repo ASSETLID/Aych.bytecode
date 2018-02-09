@@ -14,6 +14,10 @@ class type sodium = object
     Typed_array.uint8Array Js.t -> Typed_array.uint8Array Js.t -> bool Js.meth
   method memzero : Typed_array.uint8Array Js.t -> unit Js.meth
 
+  (* Random *)
+  method randombytes_stir_ : unit -> unit Js.meth
+  method randombytes_buf_ : int -> Typed_array.uint8Array Js.t Js.meth
+
   (* Generic hash *)
   method crypto_generichash_BYTES_ : int Js.prop
   method crypto_generichash_BYTES_MIN_ : int Js.prop

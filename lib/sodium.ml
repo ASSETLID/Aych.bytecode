@@ -12,6 +12,28 @@ type public
 module Storage = Sodium_storage
 type bigbytes = Storage.bigbytes
 
+module Random = struct
+
+  let stir () = sodium##randombytes_stir_(())
+
+  module type S = sig
+    type storage
+    val generate      : int -> storage
+  end
+
+  module Make(T: Storage.S) = struct
+    type storage = T.t
+
+    let generate size =
+      sodium##randombytes_buf_(size)
+      |> T.of_js
+
+  end
+
+  module Bytes = Make(Storage.Bytes)
+  module Bigbytes = Make(Storage.Bigbytes)
+end
+
 module Generichash = struct
   type hash = Typed_array.uint8Array Js.t (* Bytes.t *)
   type 'a key = Typed_array.uint8Array Js.t (* Bytes.t *)
@@ -279,7 +301,6 @@ module Hash = struct
       T.to_js str
 
     let digest str =
-      let str_js = T.to_js str in
       sodium##crypto_hash_(T.to_js str)
 
     module Sha256 = struct
@@ -296,7 +317,6 @@ module Hash = struct
         T.to_js str
 
       let digest str =
-        let str_js = T.to_js str in
         sodium##crypto_hash_sha256_(T.to_js str)
     end
 
@@ -314,7 +334,6 @@ module Hash = struct
         T.to_js str
 
       let digest str =
-        let str_js = T.to_js str in
         sodium##crypto_hash_sha512_(T.to_js str)
     end
 

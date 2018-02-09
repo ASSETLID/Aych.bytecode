@@ -15,6 +15,20 @@ type public
 type bigbytes =
   (char, Bigarray.int8_unsigned_elt, Bigarray.c_layout) Bigarray.Array1.t
 
+
+module Random : sig
+  val stir : unit -> unit
+
+  module type S = sig
+    type storage
+    val generate : int -> storage
+  end
+
+  module Bytes : S with type storage = Bytes.t
+  module Bigbytes : S with type storage = bigbytes
+end
+
+
 module Generichash : sig
   type hash
   type state
