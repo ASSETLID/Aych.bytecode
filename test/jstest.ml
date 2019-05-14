@@ -25,6 +25,7 @@
  *   }
  *
  * let () = register "test" test_mapper *)
+open Js_of_ocaml
 
 module Console = struct
   let log_ok loc msg =

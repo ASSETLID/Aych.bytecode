@@ -1,3 +1,4 @@
+open Js_of_ocaml
 open Libsodium_js
 
 let sodium : sodium Js.t = Js.Unsafe.global##sodium

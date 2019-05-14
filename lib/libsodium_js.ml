@@ -1,3 +1,4 @@
+open Js_of_ocaml
 type generichash_state
 
 class type keypair = object
