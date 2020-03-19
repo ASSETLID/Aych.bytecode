@@ -1,6 +1,35 @@
 open Js_of_ocaml
 open Libsodium_js
 
+(* Ensure required libraries are available *)
+let js_failwith fmt =
+  Format.kasprintf
+    (fun s ->
+       Js.raise_js_error (jsnew Js.error_constr (Js.string s)))
+    fmt
+
+let () =
+  let is_node_js =
+    Js.Optdef.test Js.Unsafe.global##module_ &&
+    Js.Optdef.test Js.Unsafe.global##module_##exports
+  in
+  if not (Js.Optdef.test Js.Unsafe.global##sodium) then
+    js_failwith "Library sodium is required but not available %s"
+      (if is_node_js then
+         "load it with:\n\
+          const sodium = require('libsodium-wrappers-sumo');"
+       else "")
+
+let () =
+  if not (Js.Optdef.test Js.Unsafe.global##sodium##crypto_sign_SEEDBYTES_) then
+    js_failwith "Library sodium is not initialized"
+
+let () =
+  if not (Js.Optdef.test
+            Js.Unsafe.global##sodium##crypto_sign_ed25519_sk_to_pk_) then
+    js_failwith "Library libsodium-wrappers-sumo is required, it looks like \
+                 only the non-sumo version is available."
+
 let sodium : sodium Js.t = Js.Unsafe.global##sodium
 
 exception Verification_failure
